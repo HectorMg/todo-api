@@ -1,0 +1,37 @@
+version: "2"
+
+volumes:
+  postgres-data:
+    driver: local
+  app-gems:
+    driver: local
+
+services:
+
+  postgres:
+    image: postgres:latest
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: 3x4mpl3
+
+  web:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+
+    image: hectormg/todos-api:development
+    command: rails server -b 0.0.0.0 -p 3000
+    ports:
+      - 3000:3000
+    links:
+      - postgres:db
+    entrypoint: /usr/src/app/development-entrypoint
+    volumes:
+      - .:/usr/src/app
+      - app-gems:/usr/local/bundle
+    stdin_open: true
+    tty: true
+    environment:
+      DATABASE_URL: postgres://postgres:3x4mpl3@db:5432/todos_api_development
+      RAILS_LOG_TO_STDOUT: "true"
