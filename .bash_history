@@ -1,0 +1,4 @@
+clear
+bundle
+clear
+exit
