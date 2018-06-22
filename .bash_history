@@ -1,4 +1,0 @@
-clear
-bundle
-clear
-exit
